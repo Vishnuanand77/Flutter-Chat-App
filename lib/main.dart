@@ -1,6 +1,7 @@
 import 'package:chatapp/Screens/auth_screen.dart';
 import 'package:chatapp/Screens/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,10 +19,19 @@ class MyApp extends StatelessWidget {
         buttonTheme: ButtonTheme.of(context).copyWith(
           buttonColor: Colors.pink,
           textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
-      home: AuthScreen(),
+      home: StreamBuilder(
+        builder: (ctx, userSnapshot) {
+          if (userSnapshot.hasData) {
+            return ChatScreen();
+          }
+          return AuthScreen();
+        },
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+      ),
     );
   }
 }
