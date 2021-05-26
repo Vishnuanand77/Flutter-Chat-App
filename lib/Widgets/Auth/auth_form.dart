@@ -53,14 +53,14 @@ class _AuthFormState extends State<AuthForm> {
           boxShadow: [
             new BoxShadow(
               color: Colors.black45,
-              blurRadius: 40.0,
-              spreadRadius: 5.0,
+              blurRadius: 80.0,
+              spreadRadius: 10.0,
             ),
           ],
         ),
         child: Card(
           elevation: 40,
-          margin: EdgeInsets.all(20),
+          margin: EdgeInsets.all(30),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
