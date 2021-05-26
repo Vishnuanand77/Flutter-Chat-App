@@ -6,18 +6,22 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
-
   final _formKey = GlobalKey<FormState>();
-  String _userEmail = '';
-  String _userName = '';
-  String _userPassword = '';
+  var _isLogin = true;
+
+  var _userEmail = '';
+  var _userName = '';
+  var _userPassword = '';
 
   void _trySubmit() {
-    final isValid = _formKey.currentState.validate(); //Triggers validation in all form fields
-    FocusScope.of(context).unfocus(); //Closes the soft keyboard when submit is pressed.
+    final isValid = _formKey.currentState
+        .validate(); //Triggers validation in all form fields
+    FocusScope.of(context)
+        .unfocus(); //Closes the soft keyboard when submit is pressed.
 
     if (isValid) {
-      _formKey.currentState.save(); //Triggers on saved function in all form fields
+      _formKey.currentState
+          .save(); //Triggers on saved function in all form fields
 
       //User saved values to send auth request
 
@@ -40,7 +44,16 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  Text(
+                    'Flutter Chat',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12),
                   TextFormField(
+                    key: ValueKey('email'),
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Email Address'),
                     validator: (value) {
@@ -53,19 +66,22 @@ class _AuthFormState extends State<AuthForm> {
                       _userEmail = value;
                     },
                   ),
+                  if (!_isLogin)
+                    TextFormField(
+                      key: ValueKey('username'),
+                      decoration: InputDecoration(labelText: 'Username'),
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 4) {
+                          return 'Please enter at least 4 characters';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _userName = value;
+                      },
+                    ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Username'),
-                    validator: (value) {
-                      if (value.isEmpty || value.length < 4) {
-                        return 'Please enter at least 4 characters';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _userName = value;
-                    },
-                  ),
-                  TextFormField(
+                    key: ValueKey('password'),
                     decoration: InputDecoration(labelText: 'Password'),
                     validator: (value) {
                       if (value.isEmpty || value.length < 7) {
@@ -81,11 +97,17 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(height: 12),
                   RaisedButton(
                     onPressed: _trySubmit,
-                    child: Text('Login'),
+                    child: Text(_isLogin ? 'Login' : 'Sign Up'),
                   ),
                   FlatButton(
-                    onPressed: () {},
-                    child: Text('Create new Account'),
+                    onPressed: () {
+                      setState(() {
+                        _isLogin = !_isLogin;
+                      });
+                    },
+                    child: Text(_isLogin
+                        ? 'Create new Account'
+                        : 'I already have an account'),
                     textColor: Theme.of(context).primaryColor,
                   ),
                 ],
