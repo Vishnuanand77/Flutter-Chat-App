@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,16 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email, password: password);
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
+        await Firestore.instance
+            .collection('users')
+            .document(authResult.user.uid)
+            .setData({
+          'username': username,
+          'email': email,
+        });
       }
     } on PlatformException catch (err) {
       //PlatformException is to filter errors from firebase
