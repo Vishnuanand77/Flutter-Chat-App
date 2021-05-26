@@ -11,9 +11,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  //Using firebase SDK to create a new user or sign an existing user in.
-
   final _auth = FirebaseAuth.instance;
+  var _isLoading = false;
 
   void _submitAuthForm(
     String email,
@@ -24,7 +23,11 @@ class _AuthScreenState extends State<AuthScreen> {
   ) async {
     AuthResult authResult;
 
+//Using firebase SDK to create a new user or sign an existing user in.
     try {
+      setState(() {
+        _isLoading = true;
+      });
       if (isLogin) {
         authResult = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
@@ -53,8 +56,14 @@ class _AuthScreenState extends State<AuthScreen> {
         content: Text(message),
         backgroundColor: Theme.of(ctx).errorColor,
       ));
+      setState(() {
+        _isLoading = false;
+      });
     } catch (err) {
       print(err);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -62,7 +71,10 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(_submitAuthForm),
+      body: AuthForm(
+        _submitAuthForm,
+        _isLoading,
+      ),
     );
   }
 }
