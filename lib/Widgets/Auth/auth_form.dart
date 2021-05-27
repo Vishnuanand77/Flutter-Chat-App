@@ -1,3 +1,4 @@
+import 'package:chatapp/Widgets/Pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -85,6 +86,7 @@ class _AuthFormState extends State<AuthForm> {
                         fontFamily: 'Billabong',
                       ),
                     ),
+                    if (!_isLogin) UserImagePicker(),
                     SizedBox(height: 12),
                     TextFormField(
                       key: ValueKey('email'),
