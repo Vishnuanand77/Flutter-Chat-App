@@ -9,5 +9,8 @@ A range of Firebase functionalities is implemented with the app :
 - Using cloud functions
 - User authentication and validation
 - Storing extra user information
+- Making UI in collaboration with firebase storage 
+    - Storing user images and displaying them in the chat
+    - Storing username in firebase and displaying them in chat
 
 The final app is a full fledged deployable app.
