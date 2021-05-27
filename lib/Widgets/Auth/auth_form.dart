@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatapp/Widgets/Pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -28,12 +30,27 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
+  File _userImagefile;
+
+  void _pickedImage(File image) {
+    _userImagefile = image;
+  }
 
   void _trySubmit() {
     final isValid = _formKey.currentState
         .validate(); //Triggers validation in all form fields
     FocusScope.of(context)
         .unfocus(); //Closes the soft keyboard when submit is pressed.
+
+    if (_userImagefile == null && !_isLogin) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please Pick an Image!'),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+      return;
+    }
 
     if (isValid) {
       _formKey.currentState
@@ -86,7 +103,7 @@ class _AuthFormState extends State<AuthForm> {
                         fontFamily: 'Billabong',
                       ),
                     ),
-                    if (!_isLogin) UserImagePicker(),
+                    if (!_isLogin) UserImagePicker(_pickedImage),
                     SizedBox(height: 12),
                     TextFormField(
                       key: ValueKey('email'),
