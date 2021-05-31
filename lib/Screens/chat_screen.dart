@@ -1,10 +1,24 @@
 import 'package:chatapp/Widgets/Chat/messages.dart';
 import 'package:chatapp/Widgets/Chat/newMessage.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ChatScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final fbm = FirebaseMessaging();
+    fbm.requestNotificationPermissions(); //Works only on iOS
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +33,7 @@ class ChatScreen extends StatelessWidget {
         ),
         actions: [
           DropdownButton(
+            underline: Container(),
             items: [
               DropdownMenuItem(
                 child: Container(

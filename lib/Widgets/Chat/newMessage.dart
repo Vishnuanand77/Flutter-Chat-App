@@ -14,7 +14,7 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance
-        .currentUser(); //Gives information about the currently logged in user
+        .currentUser; //Gives information about the currently logged in user
     final userData =
         await Firestore.instance.collection('users').document(user.uid).get();
     Firestore.instance.collection('chat').add({
@@ -36,6 +36,9 @@ class _NewMessageState extends State<NewMessage> {
         children: <Widget>[
           Expanded(
             child: TextField(
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
               controller: _controller,
               decoration: InputDecoration(labelText: 'Send a message'),
               onChanged: (value) {

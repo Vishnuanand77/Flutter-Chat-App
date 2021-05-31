@@ -109,6 +109,9 @@ class _AuthFormState extends State<AuthForm> {
                     SizedBox(height: 12),
                     TextFormField(
                       key: ValueKey('email'),
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.none,
+                      enableSuggestions: false,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(labelText: 'Email Address'),
                       validator: (value) {
@@ -124,6 +127,9 @@ class _AuthFormState extends State<AuthForm> {
                     if (!_isLogin)
                       TextFormField(
                         key: ValueKey('username'),
+                        autocorrect: true,
+                        textCapitalization: TextCapitalization.words,
+                        enableSuggestions: true,
                         decoration: InputDecoration(labelText: 'Username'),
                         validator: (value) {
                           if (value.isEmpty || value.length < 4) {
