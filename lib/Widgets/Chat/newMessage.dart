@@ -16,13 +16,13 @@ class _NewMessageState extends State<NewMessage> {
     final user = await FirebaseAuth.instance
         .currentUser; //Gives information about the currently logged in user
     final userData =
-        await Firestore.instance.collection('users').document(user.uid).get();
-    Firestore.instance.collection('chat').add({
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+    FirebaseFirestore.instance.collection('chat').add({
       'text': _enteredMessage,
       'timestamp': Timestamp.now(),
       'userId': user.uid,
-      'username': userData['username'],
-      'userImage': userData['url'],
+      'username': userData.data()['username'],
+      'userImage': userData.data()['url'],
     });
     _controller.clear();
   }

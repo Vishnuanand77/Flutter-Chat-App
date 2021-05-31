@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
     File image,
     BuildContext ctx,
   ) async {
-    AuthResult authResult;
+    UserCredential authResult;
 
 //Using firebase SDK to create a new user or sign an existing user in.
     try {
@@ -47,15 +47,15 @@ class _AuthScreenState extends State<AuthScreen> {
             .child('user_image')
             .child(authResult.user.uid + '.jpg');
 
-        await ref.putFile(image).onComplete;
+        await ref.putFile(image);
 
         //Downloading the image via URL to use in the message bubble
         final url = await ref.getDownloadURL();
 
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection('users')
-            .document(authResult.user.uid)
-            .setData({
+            .doc(authResult.user.uid)
+            .set({
           'username': username,
           'email': email,
           'url': url,
@@ -69,6 +69,7 @@ class _AuthScreenState extends State<AuthScreen> {
         message = err.message;
       }
 
+      // ignore: deprecated_member_use
       Scaffold.of(ctx).showSnackBar(SnackBar(
         content: Text(message),
         backgroundColor: Theme.of(ctx).errorColor,
